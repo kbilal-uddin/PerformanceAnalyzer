@@ -1,4 +1,3 @@
-﻿using BenchmarkDotNet.Running;
-using PerformanceAnalyzer;
+﻿using PerformanceAnalyzer;
 
 new Analyzer().Run();
