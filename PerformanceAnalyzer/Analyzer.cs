@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
+﻿using System.Text;
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Configs;
 using PerformanceAnalyzer.Comparison;
