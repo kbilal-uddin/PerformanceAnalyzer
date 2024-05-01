@@ -1,3 +1,11 @@
 ﻿using PerformanceAnalyzer;
+using PerformanceAnalyzer.Extensions;
 
-new Analyzer().Run();
+try
+{
+    new Analyzer().Run();
+}
+catch(Exception e)
+{
+    CustomConsole.WriteLine($"Unable to run comparsion: {e.Message}", ConsoleColor.Black, ConsoleColor.Red);
+}

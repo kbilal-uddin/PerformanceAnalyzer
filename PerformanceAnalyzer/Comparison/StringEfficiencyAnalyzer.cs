@@ -5,7 +5,7 @@ using BenchmarkDotNet.Attributes;
 namespace PerformanceAnalyzer.Comparison
 {
     [MemoryDiagnoser]
-    public class CompareMethods
+    public class StringEfficiencyAnalyzer
     {
         public int number = 5;
 

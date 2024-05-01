@@ -2,6 +2,7 @@
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Configs;
 using PerformanceAnalyzer.Comparison;
+using PerformanceAnalyzer.Extensions;
 
 namespace PerformanceAnalyzer
 {
@@ -9,19 +10,19 @@ namespace PerformanceAnalyzer
     {
         internal void Run()
         {
-            WriteLine("Performance Face-Off: Benchmarking C# Methods to Find the Fastest Approach", ConsoleColor.Black, ConsoleColor.Yellow);
-            WriteLine("Please select the appropiate key to run an analysis", ConsoleColor.Black, ConsoleColor.Yellow);
+            CustomConsole.WriteLine("Performance Face-Off: Benchmarking C# Methods to Find the Fastest Approach", ConsoleColor.Black, ConsoleColor.Yellow);
+            CustomConsole.WriteLine("Please select the appropiate key to run an analysis", ConsoleColor.Black, ConsoleColor.Yellow);
 
-            WriteLine($"Please select the appropiate key to run an analysis{Environment.NewLine}{GenerateMenu()}");
+            CustomConsole.WriteLine($"Please select the appropiate key to run an analysis{Environment.NewLine}{GenerateMenu()}");
 
 
             string _key = Console.ReadLine();
 
-            WriteLine("Please provide path to generate reports", ConsoleColor.Black, ConsoleColor.Yellow);
+            CustomConsole.WriteLine("Please provide path to generate reports", ConsoleColor.Black, ConsoleColor.Yellow);
 
             string _path = Console.ReadLine();
 
-            InitializePerformance(_key, _path);
+            InitializeBenchmarkDotNet(_key, _path);
         }
 
         private string GenerateMenu()
@@ -30,11 +31,12 @@ namespace PerformanceAnalyzer
 
             menu.AppendLine("1. Concatination vs Interpolation");
             menu.AppendLine("2. WithStringBuilder vs WithString");
+            menu.AppendLine("3. != null vs is not null");
 
             return menu.ToString();
         }
 
-        private void InitializePerformance(string key, string reportPath = "")
+        private void InitializeBenchmarkDotNet(string key, string reportPath = "")
         {
             ManualConfig customConfig = null;
 
@@ -46,24 +48,16 @@ namespace PerformanceAnalyzer
                 var result = key switch
                 {
                     "1" => BenchmarkRunner.Run<StringBenchmark>(customConfig),
-                    "2" => BenchmarkRunner.Run<CompareMethods>(customConfig),
+                    "2" => BenchmarkRunner.Run<StringEfficiencyAnalyzer>(customConfig),
+                    "3" => BenchmarkRunner.Run<NullCheckComparator>(customConfig),
                     _ => throw new NotImplementedException(),
                 };
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                WriteLine("No such key found", ConsoleColor.Black, ConsoleColor.Red);
+                CustomConsole.WriteLine($"Unable to run comparsion: {e.Message}", ConsoleColor.Black, ConsoleColor.Red);
             }
             
-        }
-
-        private void WriteLine(string value, ConsoleColor background = ConsoleColor.Black, ConsoleColor foreground = ConsoleColor.Gray)
-        {
-            Console.ForegroundColor = foreground;
-            Console.BackgroundColor = background;
-            Console.WriteLine(value);
-
-            Console.ResetColor();
         }
     }
 }
